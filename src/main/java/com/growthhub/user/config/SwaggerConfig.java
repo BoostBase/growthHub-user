@@ -1,4 +1,4 @@
-package com.growthhub.user.global.config;
+package com.growthhub.user.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
