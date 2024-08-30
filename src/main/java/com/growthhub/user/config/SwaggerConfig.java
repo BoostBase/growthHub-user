@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(title = "Growth Hub API 명세서",
-                description = "인증, 회원 서비스",
+                description = "회원 서비스",
                 version = "v1"),
         servers = @Server(url = "/api/user-service"))
 @Configuration
