@@ -14,4 +14,9 @@ public class TestController {
     public String test(HttpServletRequest request) {
         return request.getHeader("User-Id");
     }
+
+    @GetMapping("/test")
+    public String test2() {
+        return "test";
+    }
 }
