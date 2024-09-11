@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-@RequestMapping("/users")
+@RequestMapping("/test")
 public class TestController {
     @GetMapping
     public String test(HttpServletRequest request) {
         return request.getHeader("User-Id");
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test-string")
     public String test2() {
         return "test";
     }
