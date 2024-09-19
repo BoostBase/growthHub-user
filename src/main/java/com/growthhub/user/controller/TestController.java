@@ -1,6 +1,6 @@
 package com.growthhub.user.controller;
 
-import com.growthhub.user.dto.request.OnboardingCompleteDto;
+import com.growthhub.user.dto.request.OnboardingCompleteRequest;
 import com.growthhub.user.util.KafkaProducer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class TestController {
 
     @GetMapping("/kafka-test")
     public String kafkaTest(HttpServletRequest request) {
-        kafkaProducer.send("test", new OnboardingCompleteDto(Long.valueOf(request.getHeader("User-Id"))));
+        kafkaProducer.send("onboarding-ok", new OnboardingCompleteRequest(Long.valueOf(request.getHeader("User-Id"))));
         return "kafka-test";
     }
 }
