@@ -1,0 +1,38 @@
+package com.growthhub.user.controller;
+
+import com.growthhub.user.dto.ResponseTemplate;
+import com.growthhub.user.dto.request.OnboardingInfoRequest;
+import com.growthhub.user.service.UserServiceFacade;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@Tag(name = "UserController", description = "user 관련 API")
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping
+@RestController
+public class UserController {
+
+    private final UserServiceFacade userServiceFacade;
+
+    @Operation(summary = "onboarding", description = "onboarding - userId는 입력 X")
+    @PostMapping("/onboarding")
+    public ResponseEntity<ResponseTemplate<?>> onboarding(
+            HttpServletRequest request, OnboardingInfoRequest onboardingInfoRequest
+    ) {
+        Long userId = Long.parseLong(request.getHeader("User-Id"));
+        userServiceFacade.onboardingComplete(userId, onboardingInfoRequest);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
+}
