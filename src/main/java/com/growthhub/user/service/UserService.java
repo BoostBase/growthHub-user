@@ -22,6 +22,6 @@ public class UserService {
         Onboarding onboarding = onboardingRepository.save(onboardingInfoRequest.toOnboarding(userId));
         OnboardingOutbox outbox = onboardingOutboxRepository.save(OnboardingOutbox.from(onboarding));
 
-        return onboarding.getId();
+        return outbox.getId();
     }
 }

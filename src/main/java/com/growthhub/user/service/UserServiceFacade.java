@@ -12,7 +12,7 @@ public class UserServiceFacade {
     private final OnboardingKafkaFacade onboardingKafkaFacade;
 
     public void onboardingComplete(Long userId, OnboardingInfoRequest onboardingInfoRequest) {
-        Long outbox = userService.onboardingComplete(userId, onboardingInfoRequest);
-        onboardingKafkaFacade.sendOnboardingComplete(outbox);
+        Long outboxId = userService.onboardingComplete(userId, onboardingInfoRequest);
+        onboardingKafkaFacade.sendOnboardingComplete(outboxId);
     }
 }
