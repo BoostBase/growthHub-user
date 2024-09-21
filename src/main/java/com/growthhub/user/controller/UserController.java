@@ -1,7 +1,9 @@
 package com.growthhub.user.controller;
 
 import com.growthhub.user.dto.ResponseTemplate;
+import com.growthhub.user.dto.request.EnrollCareerRequest;
 import com.growthhub.user.dto.request.OnboardingInfoRequest;
+import com.growthhub.user.service.UserService;
 import com.growthhub.user.service.UserServiceFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserServiceFacade userServiceFacade;
+    private final UserService userService;
 
     @Operation(summary = "onboarding", description = "onboarding - userId는 입력 X")
     @PostMapping("/onboarding")
@@ -30,6 +33,19 @@ public class UserController {
     ) {
         Long userId = Long.parseLong(request.getHeader("User-Id"));
         userServiceFacade.onboardingComplete(userId, onboardingInfoRequest);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
+
+    @Operation(summary = "enroll career", description = "enroll career")
+    @PostMapping("/career")
+    public ResponseEntity<ResponseTemplate<?>> enrollCareer(
+            HttpServletRequest request, EnrollCareerRequest enrollCareerRequest
+    ) {
+        Long userId = Long.parseLong(request.getHeader("User-Id"));
+        userService.enrollCareer(userId, enrollCareerRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
