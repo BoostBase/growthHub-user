@@ -27,7 +27,7 @@ public class OnboardingKafkaFacade {
                 kafkaProducer.send("onboarding-info", OnboardingInfoRequest.from(onboarding));
 
                 //onboarding 삭제
-                onboardingRepository.delete(onboarding);
+//                onboardingRepository.delete(onboarding);
             });
 
             //outbox 삭제
