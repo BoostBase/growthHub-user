@@ -4,30 +4,19 @@ import com.growthhub.user.domain.OnboardingInfo;
 import com.growthhub.user.domain.type.CompanySize;
 import com.growthhub.user.domain.type.MentorType;
 import com.growthhub.user.domain.type.Purpose;
-import com.growthhub.user.domain.type.Role;
 import lombok.Builder;
 
 @Builder
-public record OnboardingInfoRequest(
-        Role role,
+public record OnboardingInfoKafkaRequest(
+        Long userId,
         CompanySize companySize,
         MentorType mentorType,
         Purpose purpose,
         String onboardingDetail
 ) {
-    public OnboardingInfo toOnboarding(Long userId) {
-        return OnboardingInfo.builder()
-                .userId(userId)
-                .companySize(companySize)
-                .mentorType(mentorType)
-                .role(role)
-                .purpose(purpose)
-                .onboardingDetail(onboardingDetail)
-                .build();
-    }
-
-    public static OnboardingInfoRequest from(OnboardingInfo onboardingInfo) {
-        return OnboardingInfoRequest.builder()
+    public static OnboardingInfoKafkaRequest from(OnboardingInfo onboardingInfo) {
+        return OnboardingInfoKafkaRequest.builder()
+                .userId(onboardingInfo.getUserId())
                 .companySize(onboardingInfo.getCompanySize())
                 .mentorType(onboardingInfo.getMentorType())
                 .purpose(onboardingInfo.getPurpose())

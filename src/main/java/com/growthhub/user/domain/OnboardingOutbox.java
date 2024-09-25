@@ -30,9 +30,9 @@ public class OnboardingOutbox {
         this.onboardingId = onboardingId;
     }
 
-    public static OnboardingOutbox from(Onboarding onboarding) {
+    public static OnboardingOutbox from(OnboardingInfo onboardingInfo) {
         return OnboardingOutbox.builder()
-            .onboardingId(onboarding.getId())
+            .onboardingId(onboardingInfo.getId())
             .build();
     }
 }

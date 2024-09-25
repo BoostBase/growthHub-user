@@ -3,6 +3,7 @@ package com.growthhub.user.domain;
 import com.growthhub.user.domain.type.CompanySize;
 import com.growthhub.user.domain.type.MentorType;
 import com.growthhub.user.domain.type.Purpose;
+import com.growthhub.user.domain.type.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,11 +17,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "onboarding")
+@Table(name = "onboarding_info")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Onboarding {
+public class OnboardingInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +30,9 @@ public class Onboarding {
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Enumerated(EnumType.STRING)
     private CompanySize companySize;
@@ -43,12 +47,13 @@ public class Onboarding {
     private String onboardingDetail;
 
     @Builder
-    public Onboarding(Long userId, CompanySize companySize, MentorType mentorType, Purpose purpose,
-                      String onboardingDetail) {
+    public OnboardingInfo(Long userId, CompanySize companySize, MentorType mentorType, Purpose purpose,
+                          String onboardingDetail, Role role) {
         this.userId = userId;
         this.companySize = companySize;
         this.mentorType = mentorType;
         this.purpose = purpose;
         this.onboardingDetail = onboardingDetail;
+        this.role = role;
     }
 }

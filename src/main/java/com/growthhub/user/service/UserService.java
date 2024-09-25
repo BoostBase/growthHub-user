@@ -1,38 +1,34 @@
 package com.growthhub.user.service;
 
-import com.growthhub.user.domain.Onboarding;
+import com.growthhub.user.domain.OnboardingInfo;
 import com.growthhub.user.domain.OnboardingOutbox;
 import com.growthhub.user.dto.request.EnrollCareerRequest;
 import com.growthhub.user.dto.request.OnboardingInfoRequest;
 import com.growthhub.user.dto.response.RatingResponse;
 import com.growthhub.user.repository.CareerRepository;
 import com.growthhub.user.repository.OnboardingOutboxRepository;
-import com.growthhub.user.repository.OnboardingRepository;
+import com.growthhub.user.repository.OnboardingInfoRepository;
 import com.growthhub.user.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toMap;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
-    private final OnboardingRepository onboardingRepository;
+    private final OnboardingInfoRepository onboardingInfoRepository;
     private final OnboardingOutboxRepository onboardingOutboxRepository;
     private final CareerRepository careerRepository;
     private final RatingRepository ratingRepository;
 
     @Transactional
     public Long onboardingComplete(Long userId, OnboardingInfoRequest onboardingInfoRequest) {
-        Onboarding onboarding = onboardingRepository.save(onboardingInfoRequest.toOnboarding(userId));
-        OnboardingOutbox outbox = onboardingOutboxRepository.save(OnboardingOutbox.from(onboarding));
+        OnboardingInfo onboardingInfo = onboardingInfoRepository.save(onboardingInfoRequest.toOnboarding(userId));
+        OnboardingOutbox outbox = onboardingOutboxRepository.save(OnboardingOutbox.from(onboardingInfo));
 
         return outbox.getId();
     }
