@@ -1,9 +1,7 @@
 package com.growthhub.user.domain;
 
-import com.growthhub.user.domain.type.CompanySize;
-import com.growthhub.user.domain.type.MentorType;
-import com.growthhub.user.domain.type.Purpose;
 import com.growthhub.user.domain.type.Role;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +9,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,32 +28,25 @@ public class OnboardingInfo {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @OneToMany(mappedBy = "onboarding", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<OnboardingInfoDetail> details;
+
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Enumerated(EnumType.STRING)
-    private CompanySize companySize;
-
-    @Enumerated(EnumType.STRING)
-    private MentorType mentorType;
-
-    @Enumerated(EnumType.STRING)
-    private Purpose purpose;
-
-    @Column(name = "onboarding_detail")
-    private String onboardingDetail;
-
     @Builder
-    public OnboardingInfo(Long userId, CompanySize companySize, MentorType mentorType, Purpose purpose,
-                          String onboardingDetail, Role role) {
+    public OnboardingInfo(Long userId, Role role) {
         this.userId = userId;
-        this.companySize = companySize;
-        this.mentorType = mentorType;
-        this.purpose = purpose;
-        this.onboardingDetail = onboardingDetail;
         this.role = role;
+    }
+
+    public void setDetails(List<OnboardingInfoDetail> details) {
+        this.details = details;
+        for (OnboardingInfoDetail detail : details) {
+            detail.enrollOnboarding(this); // OnboardingDetail의 onboarding 필드도 설정
+        }
     }
 }

@@ -27,10 +27,11 @@ public class UserController {
     private final UserServiceFacade userServiceFacade;
     private final UserService userService;
 
-    @Operation(summary = "onboarding", description = "onboarding - userId는 입력 X")
+    @Operation(summary = "onboarding", description = "onboarding<br>타입 종류: COMPANY_SIZE, MENTOR_TYPE,PURPOSE, ADDITIONAL_DETAIL")
     @PostMapping("/onboarding")
     public ResponseEntity<ResponseTemplate<?>> onboarding(
-            HttpServletRequest request, OnboardingInfoRequest onboardingInfoRequest
+            HttpServletRequest request,
+            @RequestBody OnboardingInfoRequest onboardingInfoRequest
     ) {
         Long userId = Long.parseLong(request.getHeader("User-Id"));
         userServiceFacade.onboardingComplete(userId, onboardingInfoRequest);
@@ -43,7 +44,8 @@ public class UserController {
     @Operation(summary = "enroll career", description = "enroll career")
     @PostMapping("/career")
     public ResponseEntity<ResponseTemplate<?>> enrollCareer(
-            HttpServletRequest request, EnrollCareerRequest enrollCareerRequest
+            HttpServletRequest request,
+            @RequestBody EnrollCareerRequest enrollCareerRequest
     ) {
         Long userId = Long.parseLong(request.getHeader("User-Id"));
         userService.enrollCareer(userId, enrollCareerRequest);

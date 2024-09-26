@@ -1,37 +1,33 @@
 package com.growthhub.user.dto.request;
 
+import com.growthhub.user.domain.OnboardingInfoDetail;
 import com.growthhub.user.domain.OnboardingInfo;
-import com.growthhub.user.domain.type.CompanySize;
-import com.growthhub.user.domain.type.MentorType;
-import com.growthhub.user.domain.type.Purpose;
 import com.growthhub.user.domain.type.Role;
-import lombok.Builder;
+import java.util.List;
 
-@Builder
 public record OnboardingInfoRequest(
         Role role,
-        CompanySize companySize,
-        MentorType mentorType,
-        Purpose purpose,
-        String onboardingDetail
+        List<OnboardingInfoDetailRequest> onboardingInfoDetailRequestList
 ) {
     public OnboardingInfo toOnboarding(Long userId) {
-        return OnboardingInfo.builder()
+        // Onboarding 객체 생성
+        OnboardingInfo onboarding = OnboardingInfo.builder()
                 .userId(userId)
-                .companySize(companySize)
-                .mentorType(mentorType)
                 .role(role)
-                .purpose(purpose)
-                .onboardingDetail(onboardingDetail)
                 .build();
-    }
 
-    public static OnboardingInfoRequest from(OnboardingInfo onboardingInfo) {
-        return OnboardingInfoRequest.builder()
-                .companySize(onboardingInfo.getCompanySize())
-                .mentorType(onboardingInfo.getMentorType())
-                .purpose(onboardingInfo.getPurpose())
-                .onboardingDetail(onboardingInfo.getOnboardingDetail())
-                .build();
+        // OnboardingDetail 리스트 생성
+        List<OnboardingInfoDetail> details = onboardingInfoDetailRequestList.stream()
+                .map(detailRequest -> OnboardingInfoDetail.builder()
+                        .onboarding(onboarding) // 현재 Onboarding 객체를 설정
+                        .type(detailRequest.type())
+                        .value(detailRequest.value())
+                        .build())
+                .toList();
+
+        // Onboarding 객체의 details 필드에 설정
+        onboarding.setDetails(details);
+
+        return onboarding;
     }
 }
