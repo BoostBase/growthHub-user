@@ -17,11 +17,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "onboarding_info_detail")
+@Table(name = "mentee_onboarding_detail")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MenteeOnboardingInfoDetail {
+public class MenteeOnboardingDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class MenteeOnboardingInfoDetail {
 
     @JoinColumn(name = "onboarding_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    MenteeOnboardingInfo onboarding;
+    MenteeOnboarding onboarding;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,13 +40,13 @@ public class MenteeOnboardingInfoDetail {
     String value;
 
     @Builder
-    public MenteeOnboardingInfoDetail(MenteeOnboardingInfo onboarding, OnboardingDetailType type, String value) {
+    public MenteeOnboardingDetail(MenteeOnboarding onboarding, OnboardingDetailType type, String value) {
         this.onboarding = onboarding;
         this.type = type;
         this.value = value;
     }
 
-    public void enrollOnboarding(MenteeOnboardingInfo onboarding) {
+    public void enrollOnboarding(MenteeOnboarding onboarding) {
         this.onboarding = onboarding;
     }
 }

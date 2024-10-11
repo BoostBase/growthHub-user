@@ -35,7 +35,7 @@ public class Career {
     @Column(name = "retire_date", nullable = false)
     private LocalDate retireDate;
 
-    @Column(name = "position", nullable = false)
+    @Column(name = "is_verified", nullable = false)
     private Boolean isVerified;
 
     @Column(name = "part", nullable = false)

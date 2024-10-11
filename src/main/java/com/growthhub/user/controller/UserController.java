@@ -3,6 +3,7 @@ package com.growthhub.user.controller;
 import com.growthhub.user.dto.ResponseTemplate;
 import com.growthhub.user.dto.request.EnrollCareerRequest;
 import com.growthhub.user.dto.request.MenteeOnboardingInfoRequest;
+import com.growthhub.user.dto.request.MentorOnboardingRequest;
 import com.growthhub.user.dto.response.RatingResponse;
 import com.growthhub.user.service.UserService;
 import com.growthhub.user.service.UserServiceFacade;
@@ -35,6 +36,20 @@ public class UserController {
     ) {
         Long userId = Long.parseLong(request.getHeader("User-Id"));
         userServiceFacade.menteeOnboardingComplete(userId, menteeOnboardingInfoRequest);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
+
+    @Operation(summary = "mentor onboarding", description = "mentor onboarding")
+    @PostMapping("/onboarding/mentor")
+    public ResponseEntity<ResponseTemplate<?>> mentorOnboarding(
+            HttpServletRequest request,
+            @RequestBody MentorOnboardingRequest mentorOnboardingRequest
+    ) {
+        Long userId = Long.parseLong(request.getHeader("User-Id"));
+        userServiceFacade.mentorOnboardingComplete(userId, mentorOnboardingRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

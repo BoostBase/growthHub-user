@@ -1,7 +1,7 @@
 package com.growthhub.user.dto.request;
 
-import com.growthhub.user.domain.MenteeOnboardingInfoDetail;
-import com.growthhub.user.domain.MenteeOnboardingInfo;
+import com.growthhub.user.domain.MenteeOnboardingDetail;
+import com.growthhub.user.domain.MenteeOnboarding;
 import com.growthhub.user.domain.type.Role;
 import java.util.List;
 
@@ -9,15 +9,15 @@ public record MenteeOnboardingInfoRequest(
         Role role,
         List<MenteeOnboardingInfoDetailRequest> menteeOnboardingInfoDetailRequestList
 ) {
-    public MenteeOnboardingInfo toOnboarding(Long userId) {
+    public MenteeOnboarding toOnboarding(Long userId) {
         // MenteeOnboarding 객체 생성
-        MenteeOnboardingInfo onboarding = MenteeOnboardingInfo.builder()
+        MenteeOnboarding onboarding = MenteeOnboarding.builder()
                 .userId(userId)
                 .build();
 
         // OnboardingDetail 리스트 생성
-        List<MenteeOnboardingInfoDetail> details = menteeOnboardingInfoDetailRequestList.stream()
-                .map(detailRequest -> MenteeOnboardingInfoDetail.builder()
+        List<MenteeOnboardingDetail> details = menteeOnboardingInfoDetailRequestList.stream()
+                .map(detailRequest -> MenteeOnboardingDetail.builder()
                         .onboarding(onboarding) // 현재 Onboarding 객체를 설정
                         .type(detailRequest.type())
                         .value(detailRequest.value())

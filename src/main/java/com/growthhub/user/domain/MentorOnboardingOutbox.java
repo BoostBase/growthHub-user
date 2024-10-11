@@ -11,11 +11,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "mentee_onboarding_outbox")
+@Table(name = "mentor_onboarding_outbox")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MenteeOnboardingOutbox {
+public class MentorOnboardingOutbox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +26,13 @@ public class MenteeOnboardingOutbox {
     private Long onboardingId;
 
     @Builder
-    public MenteeOnboardingOutbox(Long onboardingId) {
+    public MentorOnboardingOutbox(Long onboardingId) {
         this.onboardingId = onboardingId;
     }
 
-    public static MenteeOnboardingOutbox from(MenteeOnboarding menteeOnboarding) {
-        return MenteeOnboardingOutbox.builder()
-            .onboardingId(menteeOnboarding.getId())
+    public static MentorOnboardingOutbox from(MentorOnboarding mentorOnboarding) {
+        return MentorOnboardingOutbox.builder()
+            .onboardingId(mentorOnboarding.getId())
             .build();
     }
 }
