@@ -1,13 +1,13 @@
 package com.growthhub.user.service;
 
-import com.growthhub.user.domain.OnboardingInfo;
-import com.growthhub.user.domain.OnboardingOutbox;
+import com.growthhub.user.domain.MenteeOnboardingInfo;
+import com.growthhub.user.domain.MenteeOnboardingOutbox;
 import com.growthhub.user.dto.request.EnrollCareerRequest;
-import com.growthhub.user.dto.request.OnboardingInfoRequest;
+import com.growthhub.user.dto.request.MenteeOnboardingInfoRequest;
 import com.growthhub.user.dto.response.RatingResponse;
 import com.growthhub.user.repository.CareerRepository;
-import com.growthhub.user.repository.OnboardingOutboxRepository;
-import com.growthhub.user.repository.OnboardingInfoRepository;
+import com.growthhub.user.repository.MenteeOnboardingOutboxRepository;
+import com.growthhub.user.repository.MenteeOnboardingInfoRepository;
 import com.growthhub.user.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,15 +20,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final OnboardingInfoRepository onboardingInfoRepository;
-    private final OnboardingOutboxRepository onboardingOutboxRepository;
+    private final MenteeOnboardingInfoRepository menteeOnboardingInfoRepository;
+    private final MenteeOnboardingOutboxRepository menteeOnboardingOutboxRepository;
     private final CareerRepository careerRepository;
     private final RatingRepository ratingRepository;
 
     @Transactional
-    public Long onboardingComplete(Long userId, OnboardingInfoRequest onboardingInfoRequest) {
-        OnboardingInfo onboardingInfo = onboardingInfoRepository.save(onboardingInfoRequest.toOnboarding(userId));
-        OnboardingOutbox outbox = onboardingOutboxRepository.save(OnboardingOutbox.from(onboardingInfo));
+    public Long menteeOnboardingComplete(Long userId, MenteeOnboardingInfoRequest menteeOnboardingInfoRequest) {
+        MenteeOnboardingInfo menteeOnboardingInfo = menteeOnboardingInfoRepository.save(menteeOnboardingInfoRequest.toOnboarding(userId));
+        MenteeOnboardingOutbox outbox = menteeOnboardingOutboxRepository.save(MenteeOnboardingOutbox.from(menteeOnboardingInfo));
 
         return outbox.getId();
     }
@@ -43,7 +43,7 @@ public class UserService {
         return results.stream()
                 .map(result -> RatingResponse.builder()
                         .mentorId((Long) result[0])  // mentorId is assumed to be at index 0
-                        .rating(((Double) result[1]) != null ? Math.round((Double) result[1] * 2) / 2.0 : 0.0)
+                        .rating(result[1] != null ? Math.round((Double) result[1] * 2) / 2.0 : 0.0)
                         .build())
                 .toList();
     }

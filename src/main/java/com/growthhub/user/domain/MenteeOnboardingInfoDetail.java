@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class OnboardingInfoDetail {
+public class MenteeOnboardingInfoDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class OnboardingInfoDetail {
 
     @JoinColumn(name = "onboarding_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    OnboardingInfo onboarding;
+    MenteeOnboardingInfo onboarding;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,13 +40,13 @@ public class OnboardingInfoDetail {
     String value;
 
     @Builder
-    public OnboardingInfoDetail(OnboardingInfo onboarding, OnboardingDetailType type, String value) {
+    public MenteeOnboardingInfoDetail(MenteeOnboardingInfo onboarding, OnboardingDetailType type, String value) {
         this.onboarding = onboarding;
         this.type = type;
         this.value = value;
     }
 
-    public void enrollOnboarding(OnboardingInfo onboarding) {
+    public void enrollOnboarding(MenteeOnboardingInfo onboarding) {
         this.onboarding = onboarding;
     }
 }

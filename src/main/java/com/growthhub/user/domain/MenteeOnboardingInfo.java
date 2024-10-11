@@ -1,11 +1,8 @@
 package com.growthhub.user.domain;
 
-import com.growthhub.user.domain.type.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class OnboardingInfo {
+public class MenteeOnboardingInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,23 +26,19 @@ public class OnboardingInfo {
     private Long id;
 
     @OneToMany(mappedBy = "onboarding", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<OnboardingInfoDetail> details;
+    List<MenteeOnboardingInfoDetail> details;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     @Builder
-    public OnboardingInfo(Long userId, Role role) {
+    public MenteeOnboardingInfo(Long userId) {
         this.userId = userId;
-        this.role = role;
     }
 
-    public void setDetails(List<OnboardingInfoDetail> details) {
+    public void setDetails(List<MenteeOnboardingInfoDetail> details) {
         this.details = details;
-        for (OnboardingInfoDetail detail : details) {
+        for (MenteeOnboardingInfoDetail detail : details) {
             detail.enrollOnboarding(this); // OnboardingDetail의 onboarding 필드도 설정
         }
     }

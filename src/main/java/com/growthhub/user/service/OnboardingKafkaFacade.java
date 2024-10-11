@@ -1,9 +1,9 @@
 package com.growthhub.user.service;
 
+import com.growthhub.user.domain.type.Role;
 import com.growthhub.user.dto.request.OnboardingCompleteRequest;
-import com.growthhub.user.dto.request.OnboardingInfoKafkaRequest;
-import com.growthhub.user.repository.OnboardingOutboxRepository;
-import com.growthhub.user.repository.OnboardingInfoRepository;
+import com.growthhub.user.repository.MenteeOnboardingOutboxRepository;
+import com.growthhub.user.repository.MenteeOnboardingInfoRepository;
 import com.growthhub.user.util.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,24 +15,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class OnboardingKafkaFacade {
 
     private final KafkaProducer kafkaProducer;
-    private final OnboardingInfoRepository onboardingInfoRepository;
-    private final OnboardingOutboxRepository onboardingOutboxRepository;
+    private final MenteeOnboardingInfoRepository menteeOnboardingInfoRepository;
+    private final MenteeOnboardingOutboxRepository menteeOnboardingOutboxRepository;
 
-    public void sendOnboardingComplete(Long outboxId) {
-        onboardingOutboxRepository.findById(outboxId).ifPresent(onboardingOutbox -> {
-            onboardingInfoRepository.findById(onboardingOutbox.getOnboardingId()).ifPresent(onboarding -> {
+    public void sendOnboardingComplete(Long outboxId, Role role) {
+        menteeOnboardingOutboxRepository.findById(outboxId).ifPresent(onboardingOutbox -> {
+            menteeOnboardingInfoRepository.findById(onboardingOutbox.getOnboardingId()).ifPresent(onboarding -> {
                 //auth-service로 onboarding-ok 메시지 전송(isOnboarded = true 변경)
                 kafkaProducer.send("onboarding-ok",
-                        OnboardingCompleteRequest.from(onboarding.getUserId(), onboarding.getRole()));
-                //recommend-service로 onboarding-info 메시지 전송(onboarding 정보 전송)
-                kafkaProducer.send("onboarding-info", OnboardingInfoKafkaRequest.from(onboarding));
-
-                //onboarding 삭제
-//                onboardingInfoRepository.delete(onboarding);
+                        OnboardingCompleteRequest.from(onboarding.getUserId(), role));
             });
 
             //outbox 삭제
-            onboardingOutboxRepository.delete(onboardingOutbox);
+            menteeOnboardingOutboxRepository.delete(onboardingOutbox);
         });
     }
 }

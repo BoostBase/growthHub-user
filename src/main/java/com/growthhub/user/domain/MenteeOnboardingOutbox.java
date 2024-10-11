@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class OnboardingOutbox {
+public class MenteeOnboardingOutbox {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +26,13 @@ public class OnboardingOutbox {
     private Long onboardingId;
 
     @Builder
-    public OnboardingOutbox(Long onboardingId) {
+    public MenteeOnboardingOutbox(Long onboardingId) {
         this.onboardingId = onboardingId;
     }
 
-    public static OnboardingOutbox from(OnboardingInfo onboardingInfo) {
-        return OnboardingOutbox.builder()
-            .onboardingId(onboardingInfo.getId())
+    public static MenteeOnboardingOutbox from(MenteeOnboardingInfo menteeOnboardingInfo) {
+        return MenteeOnboardingOutbox.builder()
+            .onboardingId(menteeOnboardingInfo.getId())
             .build();
     }
 }

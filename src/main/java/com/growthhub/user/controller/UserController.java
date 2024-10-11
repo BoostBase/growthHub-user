@@ -2,7 +2,7 @@ package com.growthhub.user.controller;
 
 import com.growthhub.user.dto.ResponseTemplate;
 import com.growthhub.user.dto.request.EnrollCareerRequest;
-import com.growthhub.user.dto.request.OnboardingInfoRequest;
+import com.growthhub.user.dto.request.MenteeOnboardingInfoRequest;
 import com.growthhub.user.dto.response.RatingResponse;
 import com.growthhub.user.service.UserService;
 import com.growthhub.user.service.UserServiceFacade;
@@ -27,14 +27,14 @@ public class UserController {
     private final UserServiceFacade userServiceFacade;
     private final UserService userService;
 
-    @Operation(summary = "onboarding", description = "onboarding<br>타입 종류: COMPANY_SIZE, MENTOR_TYPE,PURPOSE, ADDITIONAL_DETAIL")
-    @PostMapping("/onboarding")
-    public ResponseEntity<ResponseTemplate<?>> onboarding(
+    @Operation(summary = "mentee onboarding", description = "mentee onboarding<br>타입 종류: COMPANY_SIZE, MENTOR_TYPE,PURPOSE, ADDITIONAL_DETAIL")
+    @PostMapping("/onboarding/mentee")
+    public ResponseEntity<ResponseTemplate<?>> menteeOnboarding(
             HttpServletRequest request,
-            @RequestBody OnboardingInfoRequest onboardingInfoRequest
+            @RequestBody MenteeOnboardingInfoRequest menteeOnboardingInfoRequest
     ) {
         Long userId = Long.parseLong(request.getHeader("User-Id"));
-        userServiceFacade.onboardingComplete(userId, onboardingInfoRequest);
+        userServiceFacade.menteeOnboardingComplete(userId, menteeOnboardingInfoRequest);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
