@@ -1,9 +1,6 @@
 package com.growthhub.user.service;
 
-import com.growthhub.user.domain.MenteeOnboarding;
-import com.growthhub.user.domain.MenteeOnboardingOutbox;
-import com.growthhub.user.domain.MentorOnboarding;
-import com.growthhub.user.domain.MentorOnboardingOutbox;
+import com.growthhub.user.domain.*;
 import com.growthhub.user.dto.request.EnrollCareerRequest;
 import com.growthhub.user.dto.request.MenteeOnboardingInfoRequest;
 import com.growthhub.user.dto.request.MentorOnboardingCareerRequest;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -61,6 +59,13 @@ public class UserService {
     @Transactional
     public void enrollCareer(Long userId, EnrollCareerRequest enrollCareerRequest) {
         careerRepository.save(enrollCareerRequest.toCareer(userId));
+    }
+
+    @Transactional
+    public List<Long> getUserByPart(String part){
+        return careerRepository.findByPartContaining(part).stream()
+                .map(Career::getId)
+                .collect(Collectors.toList());
     }
 
     public List<RatingResponse> getRatings(List<Long> mentorIds) {

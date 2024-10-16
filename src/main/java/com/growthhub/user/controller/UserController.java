@@ -78,4 +78,13 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(userService.getRatings(mentorIds));
     }
+
+    @GetMapping("/recommend-user")
+    public ResponseEntity<List<Long>> getUserByPart(
+            @RequestParam String part
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getUserByPart(part));
+    }
 }
