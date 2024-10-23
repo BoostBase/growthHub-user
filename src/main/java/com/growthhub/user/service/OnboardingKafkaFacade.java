@@ -1,14 +1,11 @@
 package com.growthhub.user.service;
 
 import com.growthhub.user.domain.type.Role;
-import com.growthhub.user.dto.request.MentorOnboardingKafkaRequest;
-import com.growthhub.user.dto.request.OnboardingCompleteRequest;
 import com.growthhub.user.repository.MenteeOnboardingOutboxRepository;
 import com.growthhub.user.repository.MenteeOnboardingRepository;
 import com.growthhub.user.repository.MentorOnboardingOutboxRepository;
 import com.growthhub.user.repository.MentorOnboardingRepository;
 import com.growthhub.user.util.AuthFeign;
-import com.growthhub.user.util.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
