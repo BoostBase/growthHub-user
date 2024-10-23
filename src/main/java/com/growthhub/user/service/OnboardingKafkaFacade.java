@@ -7,6 +7,7 @@ import com.growthhub.user.repository.MenteeOnboardingOutboxRepository;
 import com.growthhub.user.repository.MenteeOnboardingRepository;
 import com.growthhub.user.repository.MentorOnboardingOutboxRepository;
 import com.growthhub.user.repository.MentorOnboardingRepository;
+import com.growthhub.user.util.AuthFeign;
 import com.growthhub.user.util.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OnboardingKafkaFacade {
 
-    private final KafkaProducer kafkaProducer;
+    private final AuthFeign authFeign;
     private final MenteeOnboardingRepository menteeOnboardingRepository;
     private final MenteeOnboardingOutboxRepository menteeOnboardingOutboxRepository;
     private final MentorOnboardingRepository mentorOnboardingRepository;
@@ -27,8 +28,7 @@ public class OnboardingKafkaFacade {
         menteeOnboardingOutboxRepository.findById(outboxId).ifPresent(onboardingOutbox -> {
             menteeOnboardingRepository.findById(onboardingOutbox.getOnboardingId()).ifPresent(onboarding -> {
                 //auth-service로 onboarding-ok 메시지 전송(isOnboarded = true 변경)
-                kafkaProducer.send("onboarding-mentee-ok",
-                        OnboardingCompleteRequest.from(onboarding.getUserId(), role));
+                authFeign.menteeOnboarding(onboarding.getUserId(), role);
             });
 
             //outbox 삭제
@@ -40,8 +40,12 @@ public class OnboardingKafkaFacade {
         mentorOnboardingOutboxRepository.findById(outboxId).ifPresent(onboardingOutbox -> {
             mentorOnboardingRepository.findById(onboardingOutbox.getOnboardingId()).ifPresent(onboarding -> {
                 //auth-service로 onboarding-ok 메시지 전송(isOnboarded = true 변경)
-                kafkaProducer.send("onboarding-mentor-ok",
-                        MentorOnboardingKafkaRequest.from(onboarding));
+                authFeign.mentorOnboarding(
+                        onboarding.getUserId(),
+                        onboarding.getAssociation(),
+                        onboarding.getPart(),
+                        onboarding.getCareerYear()
+                );
             });
 
             //outbox 삭제
