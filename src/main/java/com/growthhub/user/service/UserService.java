@@ -61,10 +61,10 @@ public class UserService {
         careerRepository.save(enrollCareerRequest.toCareer(userId));
     }
 
-    @Transactional
     public List<Long> getUserByPart(String part){
         return careerRepository.findByPartContaining(part).stream()
-                .map(Career::getId)
+                .map(Career::getUserId)
+                .distinct()
                 .collect(Collectors.toList());
     }
 
